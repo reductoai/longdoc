@@ -86,10 +86,10 @@ if document_url:
 
         with open(segment.replace(".pdf", ".json"), "w") as f:
             if isinstance(json_download_url, str):
-                content = requests.get(json_download_url).content
+                content = requests.get(json_download_url).content.decode("utf-8")
             else:
                 content = json.dumps(json_download_url)
-            f.write(content.decode("utf-8"))
+            f.write(content)
 
     st.write("Concatenating chunks...")
 
