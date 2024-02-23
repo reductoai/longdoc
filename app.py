@@ -61,7 +61,7 @@ if document_url:
         "s3",
         region_name="us-west-2",
         aws_access_key_id=st.secrets["AWS_ACCESS_KEY_ID"],
-        aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
+        aws_secret_access_key=st.secrets["AWS_SECRET_ACCESS_KEY"],
     )
 
     progress_bar = st.progress(0)
@@ -69,7 +69,7 @@ if document_url:
     for i, segment in enumerate(segment_paths):
         progress_text.text(f"Processing segment {i+1} of {len(segment_paths)}")
         progress_bar.progress((i + 1) / len(segment_paths))
-        s3.upload_file(segment, os.environ["AWS_S3_BUCKET"], segment)
+        s3.upload_file(segment, st.secrets["AWS_S3_BUCKET"], segment)
         document_part_url = s3.generate_presigned_url(
             "get_object", Params={"Bucket": "AWS_S3_BUCKET", "Key": segment}
         )
