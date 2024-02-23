@@ -5,6 +5,7 @@ import requests
 import os
 from typing import List
 from PyPDF2 import PdfReader, PdfWriter
+import uuid
 
 
 "# Long Document Uploader"
@@ -13,7 +14,10 @@ reducto_api_key = st.text_input("Reducto API Key", type="password")
 document_url = st.text_input("Document URL")
 chunk_size = st.text_input("Chunk Size", "500")
 
-if document_url:
+
+if document_url and st.button("Run"):
+    uuid_prefix = str(uuid.uuid4())
+
     # Function to split PDF into segments of 500 pages each
     def split_pdf(document_url: str, segment_size: int = 500):
         # Download the PDF
@@ -42,7 +46,7 @@ if document_url:
                 writer.add_page(reader.pages[page_num])
 
             # Save each segment to a new file
-            segment_path = f"segment_{segment + 1}.pdf"
+            segment_path = f"{uuid_prefix}_segment_{segment + 1}.pdf"
             with open(segment_path, "wb") as segment_file:
                 writer.write(segment_file)
 
