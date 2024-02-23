@@ -79,6 +79,7 @@ if document_url:
             "accept": "application/json",
             "authorization": f"Bearer {reducto_api_key}",
         }
+        st.write(f"running {document_part_url}")
         params = {"document_url": document_part_url, "chunk_size": chunk_size}
         response = requests.post(url, headers=headers, params=params)
 
