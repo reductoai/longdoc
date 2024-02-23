@@ -88,7 +88,7 @@ if document_url:
             if isinstance(json_download_url, str):
                 content = requests.get(json_download_url).content
             else:
-                content = json_download_url
+                content = json.dumps(json_download_url)
             f.write(content.decode("utf-8"))
 
     st.write("Concatenating chunks...")
