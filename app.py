@@ -55,7 +55,6 @@ if document_url:
 
     # Split the PDF and get paths of the segments
     segment_paths = split_pdf(document_url)
-    print(f"PDF split into {len(segment_paths)} segments: {segment_paths}")
 
     s3 = boto3.client(
         "s3",
@@ -79,7 +78,7 @@ if document_url:
             "accept": "application/json",
             "authorization": f"Bearer {reducto_api_key}",
         }
-        st.write(f"running {document_part_url}")
+        st.write(f"processing {document_part_url} (part {i+1} of {len(segment_paths)})")
         params = {"document_url": document_part_url, "chunk_size": chunk_size}
         response = requests.post(url, headers=headers, params=params)
 
@@ -92,15 +91,12 @@ if document_url:
                 content = json.dumps(json_download_url)
             f.write(content)
 
-    st.write("Concatenating chunks...")
-
     full_output = []
 
     for i, segment in enumerate(segment_paths):
         offset = i * 500
         with open(segment.replace(".pdf", ".json"), "r") as f:
             segment_json = json.loads(f.read())
-        st.write(segment_json)
         for chunk in segment_json:
             chunk["metadata"]["page"] += offset
             for bbox in chunk["metadata"]["bbox"]:
