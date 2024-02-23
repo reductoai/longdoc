@@ -97,10 +97,15 @@ if document_url:
         offset = i * 500
         with open(segment.replace(".pdf", ".json"), "r") as f:
             segment_json = json.loads(f.read())
-        for chunk in segment_json:
-            chunk["metadata"]["page"] += offset
-            for bbox in chunk["metadata"]["bbox"]:
-                bbox["page"] += offset
+        try:
+            for chunk in segment_json:
+                chunk["metadata"]["page"] += offset
+                for bbox in chunk["metadata"]["bbox"]:
+                    bbox["page"] += offset
+        except Exception:
+            st.write(f"error processing {segment}")
+            st.write(segment_json)
+            st.write("Skipping...")
 
         full_output.extend(segment_json)
 
