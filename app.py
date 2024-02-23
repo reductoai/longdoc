@@ -71,7 +71,7 @@ if document_url:
         progress_bar.progress((i + 1) / len(segment_paths))
         s3.upload_file(segment, st.secrets["AWS_S3_BUCKET"], segment)
         document_part_url = s3.generate_presigned_url(
-            "get_object", Params={"Bucket": "AWS_S3_BUCKET", "Key": segment}
+            "get_object", Params={"Bucket": st.secrets["AWS_S3_BUCKET"], "Key": segment}
         )
 
         url = "https://api.reducto.ai/chunk_url"
