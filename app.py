@@ -99,6 +99,7 @@ if document_url:
         offset = i * 500
         with open(segment.replace(".pdf", ".json"), "r") as f:
             segment_json = json.loads(f.read())
+        st.write(segment_json)
         for chunk in segment_json:
             chunk["metadata"]["page"] += offset
             for bbox in chunk["metadata"]["bbox"]:
