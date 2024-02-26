@@ -18,8 +18,10 @@ chunk_size = st.text_input("Chunk Size", "500")
 if document_url and st.button("Run"):
     uuid_prefix = str(uuid.uuid4())
 
+    segment_size = 250
+
     # Function to split PDF into segments of 500 pages each
-    def split_pdf(document_url: str, segment_size: int = 250):
+    def split_pdf(document_url: str):
         # Download the PDF
         response = requests.get(document_url)
         original_pdf_path = "original_document.pdf"
@@ -103,7 +105,7 @@ if document_url and st.button("Run"):
     full_output = []
 
     for i, segment in enumerate(segment_paths):
-        offset = i * 500
+        offset = i * segment_size
         with open(segment.replace(".pdf", ".json"), "r") as f:
             segment_json = json.loads(f.read())
         try:
