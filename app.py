@@ -31,9 +31,14 @@ if document_url and st.button("Run"):
         total_pages = len(reader.pages)
 
         # Calculate the number of segments needed
+        st.write(f"Total pages: {total_pages}")
+        st.write(f"Segment size: {segment_size}")
+
         num_segments = total_pages // segment_size + (
             1 if total_pages % segment_size else 0
         )
+
+        st.write(f"Number of segments: {num_segments}")
 
         segment_paths: List[str] = []
         for segment in range(num_segments):
